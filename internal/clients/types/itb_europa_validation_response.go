@@ -1,6 +1,6 @@
 package types
 
 type ValidationResponse struct {
-	Valid   bool     `json:"valid"`
-	Reports []string `json:"reports,omitempty"`
+	Valid   bool     `xml:"RDF"`
+	Reports []string `xml:"ValidationReport"`
 }
