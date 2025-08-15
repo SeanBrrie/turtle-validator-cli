@@ -80,7 +80,7 @@ The `data/` folder contains example files you can use to test the validator:
 - `invalid_dcat_ap.ttl` - An incorrectly formatted general dataset
 - `invalid_health_ri.ttl` - An incorrectly formatted health research dataset
 
-## Understanding the Results
+## Results
 
 - **Validation result: true** - Your metadata file is correctly formatted and complete
 - **Validation result: false** - Your metadata file has errors or is missing required information
