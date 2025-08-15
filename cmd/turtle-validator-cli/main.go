@@ -21,6 +21,17 @@ dct:title "Example Valid Dataset" ;
 dct:description "This is an example of a dataset that should pass the ITB validation." .
 `
 
+const test2 = `
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix ex: <http://example.com/ns#> .
+
+ex:ValidExample a dcat:Dataset ;
+dct:title "Example Valid Dataset" ;
+dct:description "This is an example of a dataset that should fail the ITB validation." ;
+dcat:theme <http://www.wikidata.org/entity/Q14944328> .
+`
+
 func main() {
 	client := clients.NewItbEuropaClient()
 
@@ -29,7 +40,7 @@ func main() {
 		fmt.Print(err)
 	}
 
-	valid, err := itbEuropaServices.ValidateContent("dcat-ap", test, enums.Turtle, enums.V3Full1)
+	valid, err := itbEuropaServices.ValidateContent("dcat-ap", test2, enums.Turtle, enums.V3Full1)
 	if err != nil {
 		fmt.Print(err)
 		return
