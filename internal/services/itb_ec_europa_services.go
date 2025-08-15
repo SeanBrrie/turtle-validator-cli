@@ -24,10 +24,10 @@ func (s *ItbEuropaServices) ValidateContent(domain string, content string, cs en
 		ValidationType:    vt,
 	}
 
-	_, err := s.ItbEuropaClient.ShaclValidator(domain, payload)
+	valid, err := s.ItbEuropaClient.ShaclValidator(domain, payload)
 	if err != nil {
-		return false, err
+		return valid, err
 	}
 
-	return true, nil
+	return valid, nil
 }

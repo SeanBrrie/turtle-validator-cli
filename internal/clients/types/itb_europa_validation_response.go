@@ -1,6 +1,12 @@
 package types
 
+import "encoding/xml"
+
 type ValidationResponse struct {
-	Valid   bool     `xml:"RDF"`
-	Reports []string `xml:"ValidationReport"`
+	XMLName          xml.Name         `xml:"RDF"`
+	ValidationReport ValidationReport `xml:"ValidationReport"`
+}
+
+type ValidationReport struct {
+	Conforms bool `xml:"conforms"`
 }
