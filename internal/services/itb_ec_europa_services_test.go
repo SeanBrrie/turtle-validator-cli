@@ -118,6 +118,7 @@ func TestITBValidation(t *testing.T) {
 			if err != nil {
 				t.Fatalf("Unexpected error: %v", err)
 			}
+
 			if valid != tt.expectPass {
 				t.Errorf("Expected %v, got %v", tt.expectPass, valid)
 			}

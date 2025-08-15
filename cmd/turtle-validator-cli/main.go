@@ -5,46 +5,68 @@ import (
 	"github.com/SeanBrrie/turtle-validator-cli/internal/clients"
 	"github.com/SeanBrrie/turtle-validator-cli/internal/clients/enums"
 	"github.com/SeanBrrie/turtle-validator-cli/internal/services"
+	"log"
+	"os"
 )
 
-// todo:
-// 1. Validate through api request
-// 2. Create functions in cli
-// 3.
-
-const test = `@prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix dct: <http://purl.org/dc/terms/> .
-@prefix ex: <http://example.com/ns#> .
-
-ex:ValidExample a dcat:Dataset ;
-dct:title "Example Valid Dataset" ;
-dct:description "This is an example of a dataset that should pass the ITB validation." .
-`
-
-const test2 = `
-@prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix dct: <http://purl.org/dc/terms/> .
-@prefix ex: <http://example.com/ns#> .
-
-ex:ValidExample a dcat:Dataset ;
-dct:title "Example Valid Dataset" ;
-dct:description "This is an example of a dataset that should fail the ITB validation." ;
-dcat:theme <http://www.wikidata.org/entity/Q14944328> .
-`
-
 func main() {
+
 	client := clients.NewItbEuropaClient()
 
 	itbEuropaServices, err := services.NewItbEuropaServices(client)
 	if err != nil {
-		fmt.Print(err)
+		log.Fatalf("Failed to create ITB Europa service: %v", err)
 	}
 
-	valid, err := itbEuropaServices.ValidateContent("dcat-ap", test2, enums.Turtle, enums.V3Full1)
+	for {
+		fmt.Println("\n--- New Validation Request ---")
+		fmt.Println("Type 'exit' to quit.")
+
+		domain, content, contextSyntax, validationType := getUserInput()
+
+		valid, err := itbEuropaServices.ValidateContent(domain, content, contextSyntax, validationType)
+		if err != nil {
+			log.Printf("Validation error: %v", err)
+		}
+
+		fmt.Println("Validation result:", valid)
+	}
+}
+
+func getUserInput() (string, string, enums.ContextSyntax, enums.ValidationType) {
+	var domain string
+	fmt.Print("Domain: (e.g., dcat-ap, healthri): ")
+	fmt.Scan(&domain)
+
+	var contentFilePath string
+	fmt.Print("File path to .ttl file: ")
+	fmt.Scan(&contentFilePath)
+
+	content, err := getFileContent(contentFilePath)
 	if err != nil {
-		fmt.Print(err)
-		return
+		log.Fatalf("Failed to read content file: %v", err)
 	}
 
-	fmt.Println("isvalid: ", valid)
+	var contextSyntax enums.ContextSyntax
+	fmt.Print("Context syntax (e.g., XML, JSONLD, Turtle): ")
+	fmt.Scan(&contextSyntax)
+
+	var validationType enums.ValidationType
+	fmt.Print("Validation type (e.g., V3Full1, V200): ")
+	fmt.Scan(&validationType)
+
+	return domain, content, contextSyntax, validationType
+}
+
+func getFileContent(filePath string) (string, error) {
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		return "", err
+	}
+
+	if len(data) == 0 {
+		return "", fmt.Errorf("empty file content: %s", filePath)
+	}
+
+	return string(data), nil
 }
