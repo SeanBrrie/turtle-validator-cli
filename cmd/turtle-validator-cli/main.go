@@ -38,34 +38,41 @@ func getUserInput() (string, string, enums.ContextSyntax, enums.ValidationType) 
 	fmt.Print("Domain: (e.g., dcat-ap, healthri): ")
 	fmt.Scan(&domain)
 
-	var contentFilePath string
-	fmt.Print("File path to .ttl file: ")
-	fmt.Scan(&contentFilePath)
+	var contentFileName string
+	fmt.Print("Content file name: ")
+	fmt.Scan(&contentFileName)
 
-	content, err := getFileContent(contentFilePath)
+	content, err := getFileContent(contentFileName)
 	if err != nil {
 		log.Fatalf("Failed to read content file: %v", err)
 	}
-
-	var contextSyntax enums.ContextSyntax
+	var contextSyntaxStr string
 	fmt.Print("Context syntax (e.g., XML, JSONLD, Turtle): ")
-	fmt.Scan(&contextSyntax)
+	fmt.Scan(&contextSyntaxStr)
+	contextSyntax, err := enums.GetContextSyntax(contextSyntaxStr)
+	if err != nil {
+		log.Fatalf("Failed to parse context syntax: %v", err)
+	}
 
-	var validationType enums.ValidationType
+	var validationTypeStr string
 	fmt.Print("Validation type (e.g., V3Full1, V200): ")
-	fmt.Scan(&validationType)
+	fmt.Scan(&validationTypeStr)
+	validationType, err := enums.GetValidationType(validationTypeStr)
+	if err != nil {
+		log.Fatalf("Failed to parse context syntax: %v", err)
+	}
 
 	return domain, content, contextSyntax, validationType
 }
 
-func getFileContent(filePath string) (string, error) {
-	data, err := os.ReadFile(filePath)
+func getFileContent(fileName string) (string, error) {
+	data, err := os.ReadFile("data/" + fileName)
 	if err != nil {
 		return "", err
 	}
 
 	if len(data) == 0 {
-		return "", fmt.Errorf("empty file content: %s", filePath)
+		return "", fmt.Errorf("file not found: %s", fileName)
 	}
 
 	return string(data), nil
