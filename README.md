@@ -20,6 +20,7 @@ This tool checks if your dataset description files are correctly formatted and c
 
 2. Install dependencies:
    ```bash
+   go mod init github.com/SeanBrrie/turtle-validator-cli.git
    go mod tidy
    ```
 
@@ -52,9 +53,9 @@ The tool will ask you for the following information:
 3. **Context syntax**: The format of your metadata file
     - `Turtle` - For .ttl files
     - `XML` - For .xml files
-    - `JSONLD` - For .json+ld files
+    - `JSONLD` - For .json files
 
-4. **Validation type**: The specific version of the standard validation type
+4. **Validation type**: The specific version of the standard validation type (differs per domain)
     - `V3Full1`
     - `V200`
 
@@ -83,25 +84,6 @@ The `data/` folder contains example files you can use to test the validator:
 
 - **Validation result: true** - Your metadata file is correctly formatted and complete
 - **Validation result: false** - Your metadata file has errors or is missing required information
-
-## Common Issues and Solutions
-
-### File Not Found
-If you see "file not found", make sure:
-- Your file is in the `data/` folder
-- You've typed the filename correctly (including the .ttl extension)
-- The file is not empty
-
-### Connection Errors
-If you see connection errors:
-- Check your internet connection
-- The European validation service might be temporarily unavailable - try again later
-
-### Validation Failures
-If your file fails validation:
-- Check that you're using the correct domain and validation type combination
-- Review the example files in the `data/` folder for the correct format
-- Ensure all required fields are present in your metadata
 
 ## Project Structure
 
