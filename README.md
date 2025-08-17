@@ -1,10 +1,10 @@
 # Turtle Validator CLI
 
-A command-line tool for validating dataset metadata files against European metadata standards. This tool helps data stewards ensure their dataset descriptions comply with agreed-upon metadata models before submission to national and European data catalogues.
+A command-line tool for validating dataset metadata files against European metadata standards. This tool helps to ensure dataset descriptions comply with agreed-upon metadata models before submission to national and European data catalogues.
 
 ## What This Tool Does
 
-This tool checks if your dataset description files are correctly formatted and contain all required information according to European standards. It's like a spell-checker, but for dataset metadata.
+This tool checks if your dataset description files are correctly formatted and contain all required information according to European standards.
 
 ## Prerequisites
 
@@ -92,7 +92,7 @@ turtle-validator-cli/
 ├── cmd/
 │   └── turtle-validator-cli/
 │       └── main.go                 # Main application entry point
-├── data/                           # Example test files
+├── data/                           
 │   ├── valid_dcat_ap.ttl
 │   ├── valid_health_ri.ttl
 │   ├── invalid_dcat_ap.ttl
